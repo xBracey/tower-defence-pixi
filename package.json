@@ -1,0 +1,43 @@
+{
+  "name": "tower-defence-pixi",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:xBracey/tower-defence-pixi.git",
+  "author": "Thomas Brace <thomas.brace@titanacademy.io>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-ws": "^5.0.2",
+    "localforage": "^1.10.0",
+    "match-sorter": "^6.3.1",
+    "nodemon": "^3.0.1",
+    "pixi.js": "^v8.0.0-beta.11",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.20.1",
+    "sort-by": "^1.2.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.3.2",
+    "uuid": "^9.0.1",
+    "uuidv4": "^6.2.13"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/express-ws": "^3.0.4",
+    "@types/react": "^18.2.38",
+    "@types/react-dom": "^18.2.15",
+    "@types/uuid": "^9.0.7",
+    "@vitejs/plugin-react": "^4.2.0",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.31",
+    "tailwindcss": "^3.3.5",
+    "vite": "^5.0.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "serve": "vite preview",
+    "start": "ts-node src/server/index.ts",
+    "start:dev": "nodemon --watch src/server --exec ts-node src/server/index.ts"
+  }
+}
