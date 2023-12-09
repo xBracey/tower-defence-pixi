@@ -9,12 +9,13 @@ export class Bullet extends Entity {
     onDestroyBullet: (id: string) => void,
     x: number,
     y: number,
-    angle: number
+    angle: number,
+    towerId: string
   ) {
     const graphic = new Graphics();
     graphic.circle(0, 0, 4);
 
-    super({ texture: Texture.WHITE, idPrefix: "bullet" });
+    super({ texture: Texture.WHITE, idPrefix: `${towerId}|bullet` });
     this.onDestroyBullet = onDestroyBullet;
     this.x = x;
     this.y = y;

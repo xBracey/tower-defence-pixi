@@ -1,14 +1,9 @@
 import React from "react";
-import { TowerDefenceGame } from "..";
 import { MAP_HEIGHT_PX } from "../shared/constants";
-import { MenuIcon } from "../icons/menu";
 import { TowerPlacer } from "./towerPlacer";
+import { MenuIcon } from "./menu";
 
-interface TowersProps {
-  game: TowerDefenceGame;
-}
-
-export const Towers = ({ game }: TowersProps) => {
+export const Towers = () => {
   const [menuOpen, setMenuOpen] = React.useState<boolean>(false);
   const [isPlacingTower, setIsPlacingTower] = React.useState<boolean>(false);
 
@@ -18,9 +13,7 @@ export const Towers = ({ game }: TowersProps) => {
 
   return (
     <>
-      {isPlacingTower && (
-        <TowerPlacer setIsPlacingTower={setIsPlacingTower} game={game} />
-      )}
+      {isPlacingTower && <TowerPlacer setIsPlacingTower={setIsPlacingTower} />}
 
       <button
         className="absolute top-0 right-0 z-20 bg-blue-600 rounded-full flex items-center justify-center w-12 h-12"

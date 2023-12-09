@@ -1,18 +1,13 @@
 import React, { useEffect } from "react";
 
-interface GameProps {
-  addToDOM: (element: HTMLElement) => void;
-  ready?: boolean;
-}
-
-export const Game = ({ addToDOM, ready }: GameProps) => {
+export const Game = () => {
   useEffect(() => {
-    if (ready) {
-      const gameElement = document.getElementById("game");
+    const gameElement = document.getElementById("game");
 
-      if (gameElement) addToDOM(gameElement);
+    if (gameElement) {
+      window.Game.addToDOM(gameElement);
     }
-  }, [ready]);
+  }, []);
 
   return <div id="game" />;
 };

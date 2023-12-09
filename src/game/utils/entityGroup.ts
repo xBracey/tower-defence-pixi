@@ -2,9 +2,9 @@ import { Entity } from "./entity";
 
 export class EntityGroup {
   private entities: Record<string, Entity>;
-  private onCollisionCallback: (id: string, otherIds: string[]) => void;
+  private onCollisionCallback: (id: Entity, otherIds: Entity[]) => void;
 
-  constructor(onCollisionCallback: (id: string, otherIds: string[]) => void) {
+  constructor(onCollisionCallback: (id: Entity, otherIds: Entity[]) => void) {
     this.entities = {};
     this.onCollisionCallback = onCollisionCallback;
   }
@@ -27,24 +27,21 @@ export class EntityGroup {
     delete this.entities[id];
   }
 
-  addAllCollisionCheck() {
-    Object.values(this.entities).forEach((entity) => {
-      entity.checkCollisionCallback = this.onCheckCollision.bind(this);
-    });
-  }
-
   onCheckCollision(id: string) {
     const entity = this.entities[id];
-    const collisions: string[] = [];
+
+    if (!entity) return;
+
+    const collisions: Entity[] = [];
 
     Object.values(this.entities).forEach((otherEntity) => {
       if (otherEntity.id === id) return;
 
       if (entity.getBounds().intersects(otherEntity.getBounds())) {
-        collisions.push(otherEntity.id);
+        collisions.push(otherEntity);
       }
     });
 
-    this.onCollisionCallback(id, collisions);
+    this.onCollisionCallback(entity, collisions);
   }
 }

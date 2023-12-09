@@ -1,6 +1,6 @@
 import { Container, Sprite, Texture } from "pixi.js";
-import { Tilesheet } from "../tilesheet";
-import { MAP_HEIGHT, MAP_WIDTH, TileKey } from "../shared/constants";
+import { Tilesheet } from "../../tilesheet";
+import { MAP_HEIGHT, MAP_WIDTH, TileKey } from "../../shared/constants";
 
 const defaultTile: TileKey = "grass";
 
@@ -13,7 +13,7 @@ export interface PathTile {
   direction: PathDirection;
 }
 
-export class Map {
+export class GameMap {
   private tilesheet: Tilesheet;
   private tiles: TileKey[][];
   private pathTiles: PathTile[] = [];

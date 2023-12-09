@@ -1,19 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./index.css";
 import { MAP_HEIGHT_PX, MAP_WIDTH_PX } from "./shared/constants";
 import { Towers } from "./components/towers";
 import { Game } from "./components/game";
-import { TowerDefenceGame } from "./tower-defence";
+import { TowerDefenceGame } from "./game";
 
 export const TowerDefence = () => {
-  const [game, setGame] = React.useState<TowerDefenceGame | null>(null);
+  const [gameInitialized, setGameInitialized] = React.useState(false);
 
-  const onStartGame = () => {
-    setGame(new TowerDefenceGame());
-  };
+  useEffect(() => {
+    window.Game = new TowerDefenceGame();
+    setGameInitialized(true);
+  }, []);
 
   const onStartLevel = () => {
-    game?.start();
+    window.Game.start();
   };
 
   return (
@@ -24,19 +25,12 @@ export const TowerDefence = () => {
         <div className="flex items-center gap-4 w-full justify-between">
           <button
             className="bg-lime-500 hover:bg-lime-700 text-gray-900 font-bold py-2 px-4 rounded my-4"
-            onClick={onStartGame}
-          >
-            Start Game
-          </button>
-
-          <button
-            className="bg-lime-500 hover:bg-lime-700 text-gray-900 font-bold py-2 px-4 rounded my-4"
             onClick={onStartLevel}
           >
             Start Level
           </button>
         </div>
-        {game && (
+        {gameInitialized && (
           <div
             className="relative"
             style={{
@@ -44,8 +38,8 @@ export const TowerDefence = () => {
               width: MAP_WIDTH_PX,
             }}
           >
-            <Towers game={game} />
-            <Game addToDOM={game.addToDOM.bind(game)} ready={!!game} />
+            <Towers />
+            <Game />
           </div>
         )}
       </div>

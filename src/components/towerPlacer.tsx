@@ -1,10 +1,8 @@
 import React, { CSSProperties } from "react";
-import { TowerDefenceGame } from "..";
 import { SPRITES, TILE_SIZE } from "../shared/constants";
 
 interface TowerPlacerProps {
   setIsPlacingTower: (isPlacingTower: boolean) => void;
-  game: TowerDefenceGame;
 }
 
 const CIRCLE_RADIUS = 64;
@@ -15,7 +13,7 @@ const getBackgroundPosition = (sprite: keyof typeof SPRITES) => {
   }px`;
 };
 
-export const TowerPlacer = ({ setIsPlacingTower, game }: TowerPlacerProps) => {
+export const TowerPlacer = ({ setIsPlacingTower }: TowerPlacerProps) => {
   const [position, setPosition] = React.useState<{
     x: number;
     y: number;
@@ -30,7 +28,7 @@ export const TowerPlacer = ({ setIsPlacingTower, game }: TowerPlacerProps) => {
 
   const onClick = () => {
     if (position) {
-      game.createTower(position.x, position.y);
+      window.Game.createTower(position.x, position.y);
       setIsPlacingTower(false);
     }
   };

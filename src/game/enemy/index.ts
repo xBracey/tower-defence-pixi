@@ -1,28 +1,23 @@
 import { Sprite, Texture } from "pixi.js";
 import { PathTile } from "../map";
-import { TILE_SIZE } from "../shared/constants";
 import { Entity } from "../utils/entity";
+import { TILE_SIZE } from "../../shared/constants";
 
 export class Enemy extends Entity {
   private pathTiles: PathTile[];
   private currentPathTileIndex: number;
   private state: "moving" | "idle" = "idle";
   private speed: number = 2;
-  private onDestroyEnemy: (id: string) => void;
 
-  constructor(
-    pathTiles: PathTile[],
-    texture: Texture,
-    onDestroyEnemy: (id: string) => void
-  ) {
+  constructor(pathTiles: PathTile[], texture: Texture) {
     super({ texture, idPrefix: "enemy" });
-    console.log(this.id);
     this.pathTiles = pathTiles;
     this.currentPathTileIndex = 0;
     this.x = -TILE_SIZE;
     this.y = -TILE_SIZE;
     this.anchor.set(0, 0);
-    this.onDestroyEnemy = onDestroyEnemy;
+
+    window.Game.addEntity(this);
   }
 
   public start(): void {
@@ -32,6 +27,8 @@ export class Enemy extends Entity {
   }
 
   public onTick(): void {
+    super.onTick();
+
     if (this.state === "moving" && this.pathTiles[this.currentPathTileIndex]) {
       if (
         this.x === this.pathTiles[this.currentPathTileIndex].x * TILE_SIZE &&
@@ -39,7 +36,6 @@ export class Enemy extends Entity {
       ) {
         if (this.currentPathTileIndex === this.pathTiles.length - 1) {
           this.state = "idle";
-          this.onDestroyEnemy(this.id);
           this.destroy();
           return;
         }
@@ -56,5 +52,10 @@ export class Enemy extends Entity {
 
       this.translate(x, y);
     }
+  }
+
+  public destroy(): void {
+    super.destroy();
+    window.Game.entityGroup.remove(this.id);
   }
 }

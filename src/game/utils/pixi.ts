@@ -1,6 +1,6 @@
 import { Application, Ticker } from "pixi.js";
 
-export class PixiBase extends Application {
+export class PixiApp extends Application {
   constructor(width?: number, height?: number) {
     super();
     // this.renderer.resize(width || 800, height || 600);
