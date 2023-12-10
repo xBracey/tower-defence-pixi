@@ -8,6 +8,7 @@ export class Enemy extends Entity {
   private currentPathTileIndex: number;
   private state: "moving" | "idle" = "idle";
   private speed: number = 2;
+  public health: number = 5;
 
   constructor(pathTiles: PathTile[], texture: Texture) {
     super({ texture, idPrefix: "enemy" });
@@ -28,6 +29,12 @@ export class Enemy extends Entity {
 
   public onTick(): void {
     super.onTick();
+
+    if (this.health <= 0) {
+      this.state = "idle";
+      this.destroy();
+      return;
+    }
 
     if (this.state === "moving" && this.pathTiles[this.currentPathTileIndex]) {
       if (
@@ -52,10 +59,5 @@ export class Enemy extends Entity {
 
       this.translate(x, y);
     }
-  }
-
-  public destroy(): void {
-    super.destroy();
-    window.Game.entityGroup.remove(this.id);
   }
 }

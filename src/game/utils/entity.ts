@@ -12,6 +12,7 @@ export class Entity extends Sprite {
   public id: string;
   public checkCollisionCallback?: (id: string) => void;
   private collisionCheck: boolean;
+  private onTickFunction: () => void;
 
   constructor(options: SpriteOptions & EntityProps) {
     super(options);
@@ -26,8 +27,10 @@ export class Entity extends Sprite {
 
     this.collisionCheck = options.collisionCheck ?? false;
 
+    this.onTickFunction = this.onTick.bind(this);
+
     window.Game.entityGroup.add(this);
-    window.Game.addOnTick(this.onTick.bind(this));
+    window.Game.addOnTick(this.onTickFunction);
   }
 
   public translate(x: number, y: number): void {
@@ -46,7 +49,10 @@ export class Entity extends Sprite {
   }
 
   public destroy(): void {
+    console.log("destroying entity", this.id);
+
     super.destroy();
     window.Game.entityGroup.remove(this.id);
+    window.Game.removeOnTick(this.onTickFunction);
   }
 }

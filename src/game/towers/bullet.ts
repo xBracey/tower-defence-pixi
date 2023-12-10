@@ -1,39 +1,54 @@
-import { Circle, Graphics, Texture } from "pixi.js";
+import { Graphics, Texture } from "pixi.js";
 import { Entity } from "../utils/entity";
 
 export class Bullet extends Entity {
-  private speed: number = 8;
-  private onDestroyBullet: (id: string) => void;
+  private speed: number = 20;
+  private timeAlive: number = 20;
+  private timeAliveTimer: number = 0;
+  private isDestroyed: boolean = false;
 
-  constructor(
-    onDestroyBullet: (id: string) => void,
-    x: number,
-    y: number,
-    angle: number,
-    towerId: string
-  ) {
-    const graphic = new Graphics();
+  constructor(x: number, y: number, angle: number, towerId: string) {
+    const graphic = new Graphics({
+      fillStyle: 0xff0000,
+    });
     graphic.circle(0, 0, 4);
+    graphic.fill(0xff0000);
+    const texture = window.Game.app.renderer.generateTexture(graphic);
 
-    super({ texture: Texture.WHITE, idPrefix: `${towerId}|bullet` });
-    this.onDestroyBullet = onDestroyBullet;
-    this.x = x;
-    this.y = y;
+    super({
+      texture,
+      idPrefix: `${towerId}|bullet`,
+      collisionCheck: true,
+      x,
+      y,
+      rotation: angle,
+      width: 8,
+      height: 8,
+    });
     this.anchor.set(0.5, 0.5);
-    this.rotation = angle;
   }
 
   public onTick(): void {
+    super.onTick();
+
+    if (this.isDestroyed) {
+      return;
+    }
+
+    if (this.timeAliveTimer > this.timeAlive) {
+      this.destroy();
+      return;
+    }
+
     const x = Math.cos(this.rotation) * this.speed;
     const y = Math.sin(this.rotation) * this.speed;
 
     this.translate(x, y);
+    this.timeAliveTimer++;
   }
 
-  public onCollision(id: string, otherIds: string[]): void {
-    if (otherIds.includes(id)) {
-      this.onDestroyBullet(this.id);
-      this.destroy();
-    }
+  public destroy(): void {
+    super.destroy();
+    this.isDestroyed = true;
   }
 }

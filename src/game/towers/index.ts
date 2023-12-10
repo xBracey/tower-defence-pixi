@@ -4,12 +4,15 @@ import { TILE_SIZE } from "../../shared/constants";
 import { ContainerEntity } from "../utils/containerEntity";
 import { v4 } from "uuid";
 import { TowerRange } from "./range";
+import { Bullet } from "./bullet";
 
 export class Tower extends ContainerEntity {
   private range: number = 192;
+  private fireRate: number = 5;
   private bodySprite: Sprite;
   private cannonSprite: Sprite;
   public id: string;
+  public fireTimer: number = 0;
 
   constructor(x: number, y: number) {
     super();
@@ -34,13 +37,26 @@ export class Tower extends ContainerEntity {
     this.add(rangeEntity);
 
     window.Game.addContainer(this);
+    window.Game.addOnTick(this.onTick.bind(this));
   }
 
   public fire(entity: Entity) {
+    if (this.fireTimer < this.fireRate) {
+      return;
+    }
+
     const dx = entity.x - this.x;
     const dy = entity.y - this.y;
     const angle = Math.atan2(dy, dx);
 
     this.cannonSprite.rotation = angle;
+
+    const bullet = new Bullet(0, 0, angle, this.id);
+    this.add(bullet);
+    this.fireTimer = 0;
+  }
+
+  public onTick(): void {
+    this.fireTimer++;
   }
 }

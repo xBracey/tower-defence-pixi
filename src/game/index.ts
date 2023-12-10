@@ -2,6 +2,7 @@ import { mapPathConfig } from "../mapPathConfig";
 import { Enemy } from "./enemy";
 import { GameMap } from "./map";
 import { Tower } from "./towers";
+import { Bullet } from "./towers/bullet";
 import { Entity } from "./utils/entity";
 import { Game } from "./utils/game";
 
@@ -61,8 +62,6 @@ export class TowerDefenceGame extends Game {
   protected onCollision(entity: Entity, otherEntities: Entity[]): void {
     const entityType = this.entityIdToType(entity.id);
 
-    console.log({ entityType });
-
     switch (entityType) {
       case "tower":
         this.onTowerCollision(entity, otherEntities);
@@ -71,20 +70,35 @@ export class TowerDefenceGame extends Game {
         // this.onEnemyCollision(entity, otherEntities);
         break;
       case "bullet":
-        // this.onBulletCollision(entity, otherEntities));
+        this.onBulletCollision(entity, otherEntities);
         break;
       default:
         break;
     }
   }
 
+  private onBulletCollision(entity: Entity, otherEntities: Entity[]): void {
+    const bullet = entity as Bullet;
+
+    if (!bullet) return;
+
+    const enemyCollisions = otherEntities.filter((otherEntity) =>
+      otherEntity.id.startsWith("enemy")
+    ) as Enemy[];
+
+    if (bullet && enemyCollisions.length > 0) {
+      enemyCollisions[0].health--;
+      bullet.destroy();
+    }
+  }
+
   private entityIdToType(id: string): "tower" | "enemy" | "bullet" | null {
-    if (id.startsWith("tower")) {
+    if (id.startsWith("tower") && id.includes("bullet")) {
+      return "bullet";
+    } else if (id.startsWith("tower")) {
       return "tower";
     } else if (id.startsWith("enemy")) {
       return "enemy";
-    } else if (id.startsWith("bullet")) {
-      return "bullet";
     } else {
       return null;
     }

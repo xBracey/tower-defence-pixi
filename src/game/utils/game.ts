@@ -26,6 +26,10 @@ export class Game {
     this.app.ticker.add(callback);
   };
 
+  public removeOnTick = (callback: () => void): void => {
+    this.app.ticker.remove(callback);
+  };
+
   public addToDOM(element: HTMLElement): void {
     this.app.addToDOM(element);
   }
