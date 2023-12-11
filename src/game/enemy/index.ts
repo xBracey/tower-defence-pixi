@@ -1,9 +1,9 @@
 import { Sprite, Texture } from "pixi.js";
 import { PathTile } from "../map";
-import { Entity } from "../utils/entity";
 import { TILE_SIZE } from "../../shared/constants";
+import { Collidor } from "../utils/collidor";
 
-export class Enemy extends Entity {
+export class Enemy extends Collidor {
   private pathTiles: PathTile[];
   private currentPathTileIndex: number;
   private state: "moving" | "idle" = "idle";
@@ -11,14 +11,22 @@ export class Enemy extends Entity {
   public health: number = 5;
 
   constructor(pathTiles: PathTile[], texture: Texture) {
-    super({ texture, idPrefix: "enemy" });
-    this.pathTiles = pathTiles;
-    this.currentPathTileIndex = 0;
+    super({
+      texture,
+      idPrefix: "enemy",
+      hitboxesDimensions: [{ x: 16, y: 16, width: 32, height: 32 }],
+      x: -TILE_SIZE,
+      y: -TILE_SIZE,
+      width: 64,
+      height: 64,
+      anchorPoints: { x: 0, y: 0 },
+    });
     this.x = -TILE_SIZE;
     this.y = -TILE_SIZE;
-    this.anchor.set(0, 0);
+    this.pathTiles = pathTiles;
+    this.currentPathTileIndex = 0;
 
-    window.Game.addEntity(this);
+    window.Game.addContainer(this);
   }
 
   public start(): void {

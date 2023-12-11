@@ -3,7 +3,7 @@ import { Enemy } from "./enemy";
 import { GameMap } from "./map";
 import { Tower } from "./towers";
 import { Bullet } from "./towers/bullet";
-import { Entity } from "./utils/entity";
+import { Collidor } from "./utils/collidor";
 import { Game } from "./utils/game";
 
 export class TowerDefenceGame extends Game {
@@ -43,56 +43,71 @@ export class TowerDefenceGame extends Game {
     this.towers[tower.id] = tower;
   }
 
-  private onTowerCollision(entity: Entity, otherEntities: Entity[]): void {
-    const [towerId] = entity.id.split("|");
-
-    const tower = this.towers[towerId];
-
-    if (!tower) return;
-
-    const enemyCollisions = otherEntities.filter((otherEntity) =>
-      otherEntity.id.startsWith("enemy")
+  private onEnemyCollision(
+    collidor: Collidor,
+    otherCollidors: Collidor[]
+  ): void {
+    const towerCollidors = otherCollidors.filter(
+      (otherCollidor) =>
+        otherCollidor.id.startsWith("tower") &&
+        !otherCollidor.id.includes("bullet")
     );
 
-    if (tower && enemyCollisions.length > 0) {
-      tower.fire(enemyCollisions[0]);
-    }
+    if (!towerCollidors.length) return;
+
+    towerCollidors.forEach((towerCollidor) => {
+      const [towerId] = towerCollidor.id.split("|");
+
+      const tower = this.towers[towerId];
+
+      if (!tower) return;
+
+      tower.fire(collidor);
+    });
   }
 
-  protected onCollision(entity: Entity, otherEntities: Entity[]): void {
-    const entityType = this.entityIdToType(entity.id);
+  protected onCollision(collidor: Collidor, otherCollidors: Collidor[]): void {
+    if (otherCollidors.length === 0) return;
 
-    switch (entityType) {
+    const collidorType = this.collidorIdToType(collidor.id);
+
+    switch (collidorType) {
       case "tower":
-        this.onTowerCollision(entity, otherEntities);
+        // this.onTowerCollision(collidor, otherCollidors);
         break;
       case "enemy":
-        // this.onEnemyCollision(entity, otherEntities);
+        this.onEnemyCollision(collidor, otherCollidors);
         break;
       case "bullet":
-        this.onBulletCollision(entity, otherEntities);
+        this.onBulletCollision(collidor, otherCollidors);
         break;
       default:
         break;
     }
   }
 
-  private onBulletCollision(entity: Entity, otherEntities: Entity[]): void {
-    const bullet = entity as Bullet;
+  private onBulletCollision(
+    collidor: Collidor,
+    otherCollidors: Collidor[]
+  ): void {
+    const bullet = collidor as Bullet;
 
     if (!bullet) return;
 
-    const enemyCollisions = otherEntities.filter((otherEntity) =>
-      otherEntity.id.startsWith("enemy")
+    console.log("bullet collision", collidor.id, otherCollidors);
+
+    const enemyCollisions = otherCollidors.filter((otherCollidor) =>
+      otherCollidor.id.startsWith("enemy")
     ) as Enemy[];
 
     if (bullet && enemyCollisions.length > 0) {
+      console.log("hit enemy");
       enemyCollisions[0].health--;
       bullet.destroy();
     }
   }
 
-  private entityIdToType(id: string): "tower" | "enemy" | "bullet" | null {
+  private collidorIdToType(id: string): "tower" | "enemy" | "bullet" | null {
     if (id.startsWith("tower") && id.includes("bullet")) {
       return "bullet";
     } else if (id.startsWith("tower")) {

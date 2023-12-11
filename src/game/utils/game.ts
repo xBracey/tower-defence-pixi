@@ -1,24 +1,23 @@
 import { Container } from "pixi.js";
-import { Entity } from "./entity";
-import { EntityGroup } from "./entityGroup";
 import { PixiApp } from "./pixi";
-import { ContainerEntity } from "./containerEntity";
+import { CollisionChecker } from "./collisionChecker";
+import { Collidor } from "./collidor";
 
 export class Game {
   public readonly app: PixiApp;
-  public entityGroup: EntityGroup;
+  public collisionChecker: CollisionChecker;
 
   constructor(width?: number, height?: number) {
     this.app = new PixiApp(width, height);
-    this.entityGroup = new EntityGroup(this.onCollision.bind(this));
+    this.collisionChecker = new CollisionChecker(this.onCollision.bind(this));
     this.app.ticker.add(this.onTick.bind(this));
   }
 
-  public addEntity(entity: Entity): void {
+  public addContainer(entity: Container): void {
     this.app.stage.addChild(entity);
   }
 
-  public removeEntity(entity: Entity): void {
+  public removeContainer(entity: Container): void {
     this.app.stage.removeChild(entity);
   }
 
@@ -34,11 +33,7 @@ export class Game {
     this.app.addToDOM(element);
   }
 
-  public addContainer(container: ContainerEntity) {
-    this.app.stage.addChild(container);
-  }
-
-  protected onCollision(entity: Entity, otherEntities: Entity[]): void {
+  protected onCollision(entity: Collidor, otherEntities: Collidor[]): void {
     // Do Nothing
   }
 

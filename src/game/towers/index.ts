@@ -1,15 +1,14 @@
-import { Sprite, Texture } from "pixi.js";
-import { Entity } from "../utils/entity";
+import { Container, Sprite, Texture } from "pixi.js";
 import { TILE_SIZE } from "../../shared/constants";
-import { ContainerEntity } from "../utils/containerEntity";
 import { v4 } from "uuid";
 import { TowerRange } from "./range";
 import { Bullet } from "./bullet";
+import { Collidor } from "../utils/collidor";
 
-export class Tower extends ContainerEntity {
+export class Tower extends Container {
   private range: number = 192;
   private fireRate: number = 5;
-  private bodySprite: Sprite;
+  private bodySprite: Collidor;
   private cannonSprite: Sprite;
   public id: string;
   public fireTimer: number = 0;
@@ -24,23 +23,31 @@ export class Tower extends ContainerEntity {
     this.x = x + TILE_SIZE / 2;
     this.y = y + TILE_SIZE / 2;
 
-    this.bodySprite = new Sprite(bodyTexture);
+    this.bodySprite = new Collidor({
+      texture: bodyTexture,
+      idPrefix: `${this.id}|body`,
+      hitboxesDimensions: [{ x: 10, y: 16, width: 44, height: 32 }],
+      x: 0,
+      y: 0,
+      width: 64,
+      height: 64,
+      anchorPoints: { x: 0.5, y: 0.5 },
+    });
     this.cannonSprite = new Sprite(cannonTexture);
 
-    this.bodySprite.anchor.set(0.5, 0.5);
     this.cannonSprite.anchor.set(0.5, 0.5);
 
     this.addChild(this.bodySprite);
     this.addChild(this.cannonSprite);
 
     const rangeEntity = new TowerRange(this.range, this.id);
-    this.add(rangeEntity);
+    this.addChild(rangeEntity);
 
     window.Game.addContainer(this);
     window.Game.addOnTick(this.onTick.bind(this));
   }
 
-  public fire(entity: Entity) {
+  public fire(entity: Collidor) {
     if (this.fireTimer < this.fireRate) {
       return;
     }
@@ -52,7 +59,7 @@ export class Tower extends ContainerEntity {
     this.cannonSprite.rotation = angle;
 
     const bullet = new Bullet(0, 0, angle, this.id);
-    this.add(bullet);
+    this.addChild(bullet);
     this.fireTimer = 0;
   }
 

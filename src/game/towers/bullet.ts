@@ -1,39 +1,35 @@
 import { Graphics, Texture } from "pixi.js";
-import { Entity } from "../utils/entity";
+import { Collidor } from "../utils/collidor";
 
-export class Bullet extends Entity {
+export class Bullet extends Collidor {
   private speed: number = 20;
   private timeAlive: number = 20;
   private timeAliveTimer: number = 0;
-  private isDestroyed: boolean = false;
+  private graphic: Graphics;
 
   constructor(x: number, y: number, angle: number, towerId: string) {
-    const graphic = new Graphics({
-      fillStyle: 0xff0000,
-    });
-    graphic.circle(0, 0, 4);
-    graphic.fill(0xff0000);
-    const texture = window.Game.app.renderer.generateTexture(graphic);
-
     super({
-      texture,
       idPrefix: `${towerId}|bullet`,
-      collisionCheck: true,
       x,
       y,
       rotation: angle,
       width: 8,
       height: 8,
+      hitboxesDimensions: [{ x: 0, y: 0, width: 8, height: 8 }],
+      anchorPoints: { x: 0.5, y: 0.5 },
+      hitboxColor: 0x0000ff,
     });
-    this.anchor.set(0.5, 0.5);
+
+    this.graphic = new Graphics({
+      fillStyle: 0xff0000,
+    });
+    this.graphic.circle(0, 0, 4);
+    this.graphic.fill(0xff0000);
+    this.addChild(this.graphic);
   }
 
   public onTick(): void {
     super.onTick();
-
-    if (this.isDestroyed) {
-      return;
-    }
 
     if (this.timeAliveTimer > this.timeAlive) {
       this.destroy();
@@ -49,6 +45,6 @@ export class Bullet extends Entity {
 
   public destroy(): void {
     super.destroy();
-    this.isDestroyed = true;
+    this.graphic.destroy();
   }
 }

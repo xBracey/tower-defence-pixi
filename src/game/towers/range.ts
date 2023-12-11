@@ -1,7 +1,7 @@
 import { Texture } from "pixi.js";
-import { Entity } from "../utils/entity";
+import { Collidor } from "../utils/collidor";
 
-export class TowerRange extends Entity {
+export class TowerRange extends Collidor {
   constructor(range: number, id: string) {
     super({
       texture: Texture.EMPTY,
@@ -11,8 +11,9 @@ export class TowerRange extends Entity {
       y: 0,
       idPrefix: `${id}|tower-range`,
       collisionCheck: true,
+      hitboxesDimensions: [{ x: 0, y: 0, width: range, height: range }],
+      anchorPoints: { x: 0.5, y: 0.5 },
+      hitboxColor: 0x00ff00,
     });
-
-    this.anchor.set(0.5, 0.5);
   }
 }
