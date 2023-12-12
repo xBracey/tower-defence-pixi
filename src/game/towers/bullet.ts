@@ -6,16 +6,16 @@ export class Bullet extends Collidor {
   private timeAlive: number = 20;
   private timeAliveTimer: number = 0;
   private graphic: Graphics;
+  private bulletAngle: number;
 
   constructor(x: number, y: number, angle: number, towerId: string) {
     super({
       idPrefix: `${towerId}|bullet`,
       x,
       y,
-      rotation: angle,
       width: 8,
       height: 8,
-      hitboxesDimensions: [{ x: 0, y: 0, width: 8, height: 8 }],
+      hitboxesDimensions: [{ x: 1, y: 1, width: 6, height: 6 }],
       anchorPoints: { x: 0.5, y: 0.5 },
       hitboxColor: 0x0000ff,
     });
@@ -26,6 +26,7 @@ export class Bullet extends Collidor {
     this.graphic.circle(0, 0, 4);
     this.graphic.fill(0xff0000);
     this.addChild(this.graphic);
+    this.bulletAngle = angle;
   }
 
   public onTick(): void {
@@ -36,8 +37,8 @@ export class Bullet extends Collidor {
       return;
     }
 
-    const x = Math.cos(this.rotation) * this.speed;
-    const y = Math.sin(this.rotation) * this.speed;
+    const x = Math.cos(this.bulletAngle) * this.speed;
+    const y = Math.sin(this.bulletAngle) * this.speed;
 
     this.translate(x, y);
     this.timeAliveTimer++;

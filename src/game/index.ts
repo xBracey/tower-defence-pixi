@@ -94,8 +94,6 @@ export class TowerDefenceGame extends Game {
 
     if (!bullet) return;
 
-    console.log("bullet collision", collidor.id, otherCollidors);
-
     const enemyCollisions = otherCollidors.filter((otherCollidor) =>
       otherCollidor.id.startsWith("enemy")
     ) as Enemy[];

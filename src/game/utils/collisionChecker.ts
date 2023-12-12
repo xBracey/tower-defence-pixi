@@ -46,11 +46,9 @@ export class CollisionChecker {
       let hasCollided = false;
 
       hitboxes.forEach((hitbox) => {
-        const hitboxBounds = this.getGlobalRectangle(hitbox);
-
+        const hitboxBounds = hitbox.getBounds(true);
         otherHitboxes.forEach((otherHitbox) => {
-          const otherHitboxBounds = this.getGlobalRectangle(otherHitbox);
-
+          const otherHitboxBounds = otherHitbox.getBounds(true);
           if (hitboxBounds.intersects(otherHitboxBounds)) {
             hasCollided = true;
           }
@@ -61,13 +59,5 @@ export class CollisionChecker {
     });
 
     this.onCollisionCallback(collidor, collisions);
-  }
-
-  getGlobalRectangle(sprite: Sprite): Rectangle {
-    const globalPoint = sprite.getGlobalPosition();
-
-    const { width, height } = sprite.getBounds();
-
-    return new Rectangle(globalPoint.x, globalPoint.y, width, height);
   }
 }
