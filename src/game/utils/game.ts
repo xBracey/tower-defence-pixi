@@ -9,8 +9,7 @@ export class Game {
 
   constructor(width?: number, height?: number) {
     this.app = new PixiApp(width, height);
-    this.collisionChecker = new CollisionChecker(this.onCollision.bind(this));
-    this.app.ticker.add(this.onTick.bind(this));
+    this.collisionChecker = new CollisionChecker();
   }
 
   public addContainer(entity: Container): void {
@@ -31,10 +30,6 @@ export class Game {
 
   public addToDOM(element: HTMLElement): void {
     this.app.addToDOM(element);
-  }
-
-  protected onCollision(entity: Collidor, otherEntities: Collidor[]): void {
-    // Do Nothing
   }
 
   protected onTick(): void {

@@ -3,13 +3,9 @@ import { Collidor } from "./collidor";
 
 export class CollisionChecker {
   private collidors: Record<string, Collidor>;
-  private onCollisionCallback: (id: Collidor, otherIds: Collidor[]) => void;
 
-  constructor(
-    onCollisionCallback: (id: Collidor, otherIds: Collidor[]) => void
-  ) {
+  constructor() {
     this.collidors = {};
-    this.onCollisionCallback = onCollisionCallback;
   }
 
   add(collidor: Collidor) {
@@ -58,6 +54,10 @@ export class CollisionChecker {
       if (hasCollided) collisions.push(otherCollidor);
     });
 
-    this.onCollisionCallback(collidor, collisions);
+    this.onCollision(collidor, collisions);
+  }
+
+  protected onCollision(collidor: Collidor, otherCollidors: Collidor[]): void {
+    // Do Nothing
   }
 }

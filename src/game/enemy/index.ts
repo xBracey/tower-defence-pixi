@@ -9,6 +9,7 @@ export class Enemy extends Collidor {
   private state: "moving" | "idle" = "idle";
   private speed: number = 2;
   public health: number = 5;
+  public distanceTravelled: number = 0;
 
   constructor(pathTiles: PathTile[], texture: Texture) {
     super({
@@ -38,19 +39,24 @@ export class Enemy extends Collidor {
   public onTick(): void {
     super.onTick();
 
-    if (this.health <= 0) {
+    if (this.health <= 0 && this.state === "moving") {
       this.state = "idle";
+      window.Game.money.updateState((money) => money + 1);
       this.destroy();
       return;
     }
 
     if (this.state === "moving" && this.pathTiles[this.currentPathTileIndex]) {
+      this.distanceTravelled += this.speed;
+
       if (
         this.x === this.pathTiles[this.currentPathTileIndex].x * TILE_SIZE &&
         this.y === this.pathTiles[this.currentPathTileIndex].y * TILE_SIZE
       ) {
         if (this.currentPathTileIndex === this.pathTiles.length - 1) {
           this.state = "idle";
+          window.Game.lives.updateState((lives) => lives++);
+          this.health = 0;
           this.destroy();
           return;
         }

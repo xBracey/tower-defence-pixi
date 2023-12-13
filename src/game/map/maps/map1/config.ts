@@ -1,4 +1,4 @@
-export const mapPathConfig: [number, number][] = [
+export const config: [number, number][] = [
   [0, 5],
   [1, 5],
   [2, 5],

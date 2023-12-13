@@ -7,14 +7,23 @@ import { TowerDefenceGame } from "./game";
 
 export const TowerDefence = () => {
   const [gameInitialized, setGameInitialized] = React.useState(false);
+  const [gameStarted, setGameStarted] = React.useState(false);
+  const [lives, setLives] = React.useState(10);
+  const [money, setMoney] = React.useState(0);
+  const [round, setRound] = React.useState(0);
 
   useEffect(() => {
-    window.Game = new TowerDefenceGame();
+    window.Game = new TowerDefenceGame(
+      "map1",
+      [lives, setLives],
+      [money, setMoney],
+      [round, setRound]
+    );
     setGameInitialized(true);
   }, []);
 
   const onStartLevel = () => {
-    window.Game.start();
+    window.Game.startRound();
   };
 
   return (
@@ -27,8 +36,14 @@ export const TowerDefence = () => {
             className="bg-lime-500 hover:bg-lime-700 text-gray-900 font-bold py-2 px-4 rounded my-4"
             onClick={onStartLevel}
           >
-            Start Level
+            Start Round
           </button>
+
+          <div>
+            <p className="text-lime-300">Lives: {lives}</p>
+            <p className="text-lime-300">Money: {money}</p>
+            <p className="text-lime-300">Round: {round + 1}</p>
+          </div>
         </div>
         {gameInitialized && (
           <div

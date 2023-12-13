@@ -63,8 +63,6 @@ export class Collidor extends Container {
         y,
       };
 
-      console.log({ spriteOptions, hitbox, options });
-
       const graphicSprite = new Sprite(spriteOptions);
 
       graphicSprite.addChild(graphic);

@@ -1,30 +1,74 @@
-import { mapPathConfig } from "../mapPathConfig";
+import { MAP_HEIGHT, MAP_WIDTH, TILE_SIZE } from "../shared/constants";
+import { CollisionLogic } from "./collision";
 import { Enemy } from "./enemy";
 import { GameMap } from "./map";
+import { maps } from "./map/maps";
+import { TDMap, TDMapKey } from "./map/maps/types";
 import { Tower } from "./towers";
-import { Bullet } from "./towers/bullet";
-import { Collidor } from "./utils/collidor";
 import { Game } from "./utils/game";
+import { IReactState, ReactState } from "./utils/state";
 
 export class TowerDefenceGame extends Game {
   public readonly map: GameMap;
-  private towers: Record<string, Tower> = {};
+  public collisionChecker: CollisionLogic;
+  public mapConfig: TDMap;
+  public lives: ReactState<number>;
+  public money: ReactState<number>;
+  public round: ReactState<number>; // 0 indexed
+  private state: "idle" | "round" = "idle";
+  private enemies: Enemy[] = [];
 
-  constructor() {
-    super(16 * 64, 12 * 64);
+  constructor(
+    mapKey: TDMapKey,
+    lives: IReactState<number>,
+    money: IReactState<number>,
+    round: IReactState<number>
+  ) {
+    super(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE);
+    this.mapConfig = maps[mapKey];
+
+    this.collisionChecker = new CollisionLogic();
     this.map = new GameMap();
+    this.lives = new ReactState<number>(lives);
+    this.money = new ReactState<number>(money);
+    this.round = new ReactState<number>(round);
 
     this.map.load().then(() => {
-      this.map.loadPathConfig(mapPathConfig);
+      this.map.loadPathConfig(this.mapConfig.config);
       this.app.stage.addChild(this.map.getMapContainer());
       this.app.ticker.start();
+      this.app.ticker.add(this.onTick.bind(this));
     });
   }
 
-  protected onTick(): void {}
+  protected onTick(): void {
+    super.onTick();
 
-  public start(): void {
-    const numberOfEnemies = 10;
+    const enemiesStillAlive = this.enemies.some((enemy) => enemy.health > 0);
+
+    console.log({ enemiesStillAlive }, this.state);
+
+    if (this.state === "idle") {
+      return;
+    }
+
+    if (!enemiesStillAlive) {
+      this.state = "idle";
+
+      if (this.round.state === this.mapConfig.rounds.length - 1) {
+        this.round.updateState(0);
+      } else {
+        this.round.updateState(this.round.state + 1);
+      }
+    }
+  }
+
+  public startRound(): void {
+    if (this.state === "round") return;
+    this.state = "round";
+
+    const { numberOfEnemies, timeBetweenSpawns } =
+      this.mapConfig.rounds[this.round.state];
 
     for (let i = 0; i < numberOfEnemies; i++) {
       const enemy = new Enemy(
@@ -32,88 +76,16 @@ export class TowerDefenceGame extends Game {
         this.map.getTexture("enemy")
       );
 
+      this.enemies.push(enemy);
+
       setTimeout(() => {
         enemy.start();
-      }, 250 * i);
+      }, timeBetweenSpawns(i) * i);
     }
   }
 
   public createTower(x: number, y: number): void {
     const tower = new Tower(x, y);
-    this.towers[tower.id] = tower;
-  }
-
-  private onEnemyCollision(
-    collidor: Collidor,
-    otherCollidors: Collidor[]
-  ): void {
-    const towerCollidors = otherCollidors.filter(
-      (otherCollidor) =>
-        otherCollidor.id.startsWith("tower") &&
-        !otherCollidor.id.includes("bullet")
-    );
-
-    if (!towerCollidors.length) return;
-
-    towerCollidors.forEach((towerCollidor) => {
-      const [towerId] = towerCollidor.id.split("|");
-
-      const tower = this.towers[towerId];
-
-      if (!tower) return;
-
-      tower.fire(collidor);
-    });
-  }
-
-  protected onCollision(collidor: Collidor, otherCollidors: Collidor[]): void {
-    if (otherCollidors.length === 0) return;
-
-    const collidorType = this.collidorIdToType(collidor.id);
-
-    switch (collidorType) {
-      case "tower":
-        // this.onTowerCollision(collidor, otherCollidors);
-        break;
-      case "enemy":
-        this.onEnemyCollision(collidor, otherCollidors);
-        break;
-      case "bullet":
-        this.onBulletCollision(collidor, otherCollidors);
-        break;
-      default:
-        break;
-    }
-  }
-
-  private onBulletCollision(
-    collidor: Collidor,
-    otherCollidors: Collidor[]
-  ): void {
-    const bullet = collidor as Bullet;
-
-    if (!bullet) return;
-
-    const enemyCollisions = otherCollidors.filter((otherCollidor) =>
-      otherCollidor.id.startsWith("enemy")
-    ) as Enemy[];
-
-    if (bullet && enemyCollisions.length > 0) {
-      console.log("hit enemy");
-      enemyCollisions[0].health--;
-      bullet.destroy();
-    }
-  }
-
-  private collidorIdToType(id: string): "tower" | "enemy" | "bullet" | null {
-    if (id.startsWith("tower") && id.includes("bullet")) {
-      return "bullet";
-    } else if (id.startsWith("tower")) {
-      return "tower";
-    } else if (id.startsWith("enemy")) {
-      return "enemy";
-    } else {
-      return null;
-    }
+    this.collisionChecker.addTower(tower);
   }
 }
