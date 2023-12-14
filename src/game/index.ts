@@ -46,8 +46,6 @@ export class TowerDefenceGame extends Game {
 
     const enemiesStillAlive = this.enemies.some((enemy) => enemy.health > 0);
 
-    console.log({ enemiesStillAlive }, this.state);
-
     if (this.state === "idle") {
       return;
     }
@@ -87,5 +85,9 @@ export class TowerDefenceGame extends Game {
   public createTower(x: number, y: number): void {
     const tower = new Tower(x, y);
     this.collisionChecker.addTower(tower);
+  }
+
+  public removeTower(id: string): void {
+    this.collisionChecker.removeTower(id);
   }
 }

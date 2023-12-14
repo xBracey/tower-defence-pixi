@@ -11,6 +11,11 @@ export class CollisionLogic extends CollisionChecker {
     this.towers[tower.id] = tower;
   }
 
+  public removeTower(towerId: string): void {
+    this.towers[towerId].destroy();
+    delete this.towers[towerId];
+  }
+
   private onEnemyCollision(
     collidor: Collidor,
     otherCollidors: Collidor[]
