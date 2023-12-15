@@ -1,4 +1,5 @@
 import { MAP_HEIGHT, MAP_WIDTH, TILE_SIZE } from "../shared/constants";
+import { GameActions, GameState } from "../zustand/game/reducer";
 import { CollisionLogic } from "./collision";
 import { Enemy } from "./enemy";
 import { GameMap } from "./map";
@@ -6,32 +7,28 @@ import { maps } from "./map/maps";
 import { TDMap, TDMapKey } from "./map/maps/types";
 import { Tower } from "./towers";
 import { Game } from "./utils/game";
-import { IReactState, ReactState } from "./utils/state";
 
 export class TowerDefenceGame extends Game {
   public readonly map: GameMap;
   public collisionChecker: CollisionLogic;
   public mapConfig: TDMap;
-  public lives: ReactState<number>;
-  public money: ReactState<number>;
-  public round: ReactState<number>; // 0 indexed
+  public gameState: GameState;
+  public gameStateDispatch: React.Dispatch<GameActions>;
   private state: "idle" | "round" = "idle";
   private enemies: Enemy[] = [];
 
   constructor(
     mapKey: TDMapKey,
-    lives: IReactState<number>,
-    money: IReactState<number>,
-    round: IReactState<number>
+    gameState: GameState,
+    gameStateDispatch: React.Dispatch<GameActions>
   ) {
     super(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE);
     this.mapConfig = maps[mapKey];
 
     this.collisionChecker = new CollisionLogic();
     this.map = new GameMap();
-    this.lives = new ReactState<number>(lives);
-    this.money = new ReactState<number>(money);
-    this.round = new ReactState<number>(round);
+    this.gameState = gameState;
+    this.gameStateDispatch = gameStateDispatch;
 
     this.map.load().then(() => {
       this.map.loadPathConfig(this.mapConfig.config);
@@ -53,10 +50,10 @@ export class TowerDefenceGame extends Game {
     if (!enemiesStillAlive) {
       this.state = "idle";
 
-      if (this.round.state === this.mapConfig.rounds.length - 1) {
-        this.round.updateState(0);
+      if (this.gameState.round === this.mapConfig.rounds.length - 1) {
+        this.gameStateDispatch({ type: "END_GAME" });
       } else {
-        this.round.updateState(this.round.state + 1);
+        this.gameStateDispatch({ type: "FINISHED_ROUND" });
       }
     }
   }
@@ -66,7 +63,7 @@ export class TowerDefenceGame extends Game {
     this.state = "round";
 
     const { numberOfEnemies, timeBetweenSpawns } =
-      this.mapConfig.rounds[this.round.state];
+      this.mapConfig.rounds[this.gameState.round];
 
     for (let i = 0; i < numberOfEnemies; i++) {
       const enemy = new Enemy(
@@ -89,5 +86,9 @@ export class TowerDefenceGame extends Game {
 
   public removeTower(id: string): void {
     this.collisionChecker.removeTower(id);
+  }
+
+  public updateState(state: GameState): void {
+    this.gameState = state;
   }
 }

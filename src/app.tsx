@@ -4,23 +4,26 @@ import { MAP_HEIGHT_PX, MAP_WIDTH_PX } from "./shared/constants";
 import { Towers } from "./components/towers";
 import { Game } from "./components/game";
 import { TowerDefenceGame } from "./game";
+import { Header } from "./components/header";
+import { useTowerDefenceHydratedStore } from "./zustand/hydrated";
+import { useTowerDefenceStore } from "./zustand/store";
 
 export const TowerDefence = () => {
   const [gameInitialized, setGameInitialized] = React.useState(false);
-  const [gameStarted, setGameStarted] = React.useState(false);
-  const [lives, setLives] = React.useState(10);
-  const [money, setMoney] = React.useState(0);
-  const [round, setRound] = React.useState(0);
+  const { state } = useTowerDefenceHydratedStore((state) => state.game);
+  const { dispatch } = useTowerDefenceStore((state) => state.game);
+  const { lives, money, round } = state;
 
   useEffect(() => {
-    window.Game = new TowerDefenceGame(
-      "map1",
-      [lives, setLives],
-      [money, setMoney],
-      [round, setRound]
-    );
+    window.Game = new TowerDefenceGame("map1", state, dispatch);
     setGameInitialized(true);
   }, []);
+
+  useEffect(() => {
+    if (gameInitialized) {
+      window.Game.updateState(state);
+    }
+  }, [state]);
 
   const onStartLevel = () => {
     window.Game.startRound();
@@ -54,6 +57,7 @@ export const TowerDefence = () => {
             }}
           >
             <Towers />
+            <Header />
             <Game />
           </div>
         )}

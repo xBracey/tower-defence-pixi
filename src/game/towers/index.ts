@@ -7,7 +7,7 @@ import { Collidor } from "../utils/collidor";
 
 export class Tower extends Container {
   private range: number = 192;
-  private fireRate: number = 5;
+  private fireRate: number = 10;
   private bodySprite: Collidor;
   private cannonSprite: Sprite;
   public id: string;
@@ -52,8 +52,8 @@ export class Tower extends Container {
       return;
     }
 
-    const dx = entity.x - this.x;
-    const dy = entity.y - this.y;
+    const dx = entity.x - this.x + TILE_SIZE / 2;
+    const dy = entity.y - this.y + TILE_SIZE / 2;
     const angle = Math.atan2(dy, dx);
 
     this.cannonSprite.rotation = angle;

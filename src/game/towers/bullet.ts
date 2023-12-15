@@ -2,8 +2,8 @@ import { Graphics, Texture } from "pixi.js";
 import { Collidor } from "../utils/collidor";
 
 export class Bullet extends Collidor {
-  private speed: number = 20;
-  private timeAlive: number = 20;
+  private speed: number = 30;
+  private timeAlive: number = 15;
   private timeAliveTimer: number = 0;
   private graphic: Graphics;
   private bulletAngle: number;

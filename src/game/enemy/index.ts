@@ -41,7 +41,7 @@ export class Enemy extends Collidor {
 
     if (this.health <= 0 && this.state === "moving") {
       this.state = "idle";
-      window.Game.money.updateState((money) => money + 1);
+      window.Game.gameStateDispatch({ type: "ENEMY_KILLED" });
       this.destroy();
       return;
     }
@@ -55,7 +55,7 @@ export class Enemy extends Collidor {
       ) {
         if (this.currentPathTileIndex === this.pathTiles.length - 1) {
           this.state = "idle";
-          window.Game.lives.updateState((lives) => lives++);
+          window.Game.gameStateDispatch({ type: "ENEMY_REACHED_END" });
           this.health = 0;
           this.destroy();
           return;
