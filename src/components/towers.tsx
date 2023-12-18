@@ -16,7 +16,7 @@ export const Towers = () => {
       {isPlacingTower && <TowerPlacer setIsPlacingTower={setIsPlacingTower} />}
 
       <button
-        className="absolute top-0 right-0 z-20 bg-blue-600 rounded-full flex items-center justify-center w-12 h-12"
+        className="absolute -top-14 right-0 z-20 bg-blue-600 rounded-full flex items-center justify-center w-12 h-12"
         onClick={onMenuClick}
       >
         <MenuIcon className="w-8 h-8" />
