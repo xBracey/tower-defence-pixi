@@ -86,14 +86,14 @@ export const TowerPlacer = ({ setIsPlacingTower }: TowerPlacerProps) => {
         <div
           className="absolute h-16 w-16 z-10 top-0 left-0 right-0 bottom-0"
           style={{
-            background: "url(/tower-defence/tilesheet.png)",
+            background: "url(/tilesheet.png)",
             backgroundPosition: getBackgroundPosition("tankBody"),
           }}
         />
         <div
           className="absolute h-16 w-16 z-20 top-0 left-0 right-0 bottom-0"
           style={{
-            background: "url(/tower-defence/tilesheet.png)",
+            background: "url(/tilesheet.png)",
             backgroundPosition: getBackgroundPosition("tankCannon"),
           }}
         />

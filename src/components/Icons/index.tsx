@@ -36,5 +36,79 @@ const Money = (props: IconProps) => (
     />
   </svg>
 );
+const Music = (props: IconProps) => (
+  <svg
+    {...props}
+    className={`fill-current ${props.className}`}
+    aria-hidden="true"
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+  >
+    <g fill="none">
+      <circle
+        cx="6"
+        cy="18"
+        r="3"
+        fill="currentColor"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+      />
+      <circle
+        cx="18"
+        cy="17"
+        r="3"
+        fill="currentColor"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+      />
+      <path fill="currentColor" d="M21 3L9 6v4l12-3z" />
+      <path
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M9 18v-8m12 7V7M9 10V6l12-3v4M9 10l12-3"
+      />
+    </g>
+  </svg>
+);
+const Next = (props: IconProps) => (
+  <svg
+    {...props}
+    className={`fill-current ${props.className}`}
+    aria-hidden="true"
+    xmlns="http://www.w3.org/2000/svg"
+    width="32"
+    height="32"
+    viewBox="0 0 32 32"
+  >
+    <path
+      fill="currentColor"
+      d="M26.002 5a1 1 0 1 1 2 0v22a1 1 0 0 1-2 0zM3.999 6.504c0-2.002 2.236-3.192 3.897-2.073l14.003 9.432A2.5 2.5 0 0 1 21.912 18L7.909 27.56c-1.66 1.132-3.91-.056-3.91-2.065z"
+    />
+  </svg>
+);
+const Tank = (props: IconProps) => (
+  <svg
+    {...props}
+    className={`fill-current ${props.className}`}
+    aria-hidden="true"
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+  >
+    <path
+      fill="currentColor"
+      d="M20 12H4v-1h2l1-5h5l1 5h7zm-6.78-5l.4 2H22V7zM22 16a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3a3 3 0 0 1 3-3h14a3 3 0 0 1 3 3M6 16a1 1 0 0 0-1-1a1 1 0 0 0-1 1a1 1 0 0 0 1 1a1 1 0 0 0 1-1m7 0a1 1 0 0 0-1-1a1 1 0 0 0-1 1a1 1 0 0 0 1 1a1 1 0 0 0 1-1m7 0a1 1 0 0 0-1-1a1 1 0 0 0-1 1a1 1 0 0 0 1 1a1 1 0 0 0 1-1"
+    />
+  </svg>
+);
 
-export { Heart, Money };
+export { Heart, Money, Music, Next, Tank };

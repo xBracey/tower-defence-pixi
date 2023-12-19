@@ -4,6 +4,7 @@ import { v4 } from "uuid";
 import { TowerRange } from "./range";
 import { Bullet } from "./bullet";
 import { Collidor } from "../utils/collidor";
+import { sound } from "@pixi/sound";
 
 export class Tower extends Container {
   private range: number = 192;
@@ -51,6 +52,8 @@ export class Tower extends Container {
     if (this.fireTimer < this.fireRate) {
       return;
     }
+
+    sound.play("shoot", { volume: 0.5, start: 0, end: 0.15 });
 
     const dx = entity.x - this.x + TILE_SIZE / 2;
     const dy = entity.y - this.y + TILE_SIZE / 2;

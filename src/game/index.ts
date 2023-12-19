@@ -7,6 +7,7 @@ import { maps } from "./map/maps";
 import { TDMap, TDMapKey } from "./map/maps/types";
 import { Tower } from "./towers";
 import { Game } from "./utils/game";
+import { sound } from "@pixi/sound";
 
 export class TowerDefenceGame extends Game {
   public readonly map: GameMap;
@@ -36,6 +37,8 @@ export class TowerDefenceGame extends Game {
       this.app.ticker.start();
       this.app.ticker.add(this.onTick.bind(this));
     });
+
+    sound.add("shoot", "tank.wav");
   }
 
   protected onTick(): void {

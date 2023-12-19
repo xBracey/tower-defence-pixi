@@ -12,7 +12,6 @@ export const TowerDefence = () => {
   const [gameInitialized, setGameInitialized] = React.useState(false);
   const { state } = useTowerDefenceHydratedStore((state) => state.game);
   const { dispatch } = useTowerDefenceStore((state) => state.game);
-  const { lives, money, round } = state;
 
   useEffect(() => {
     window.Game = new TowerDefenceGame("map1", state, dispatch);
@@ -25,7 +24,7 @@ export const TowerDefence = () => {
     }
   }, [state]);
 
-  const onStartLevel = () => {
+  const onStartRound = () => {
     window.Game.startRound();
   };
 

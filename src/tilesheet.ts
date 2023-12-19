@@ -13,7 +13,7 @@ export class Tilesheet {
     const frames = this.constructSpritesheetFrames();
 
     const meta = {
-      image: "../public/tower-defence/tilesheet.png",
+      image: "../public/tilesheet.png",
       size: {
         w: spritesheetWidth,
         h: spritesheetHeight,
