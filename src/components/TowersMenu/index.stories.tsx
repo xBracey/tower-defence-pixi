@@ -1,14 +1,14 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { Header } from "./index";
+import { TowersMenu } from "./index";
 
-const meta: Meta<typeof Header> = {
-  component: Header,
+const meta: Meta<typeof TowersMenu> = {
+  component: TowersMenu,
 };
 
 export default meta;
-type Story = StoryObj<typeof Header>;
+type Story = StoryObj<typeof TowersMenu>;
 
 /*
  *👇 Render functions are a framework specific feature to allow you control on how the component renders.

@@ -1,24 +1,27 @@
 import React, { CSSProperties, useEffect, useMemo } from "react";
-import { SPRITES, TILE_SIZE } from "../shared/constants";
-import { useKey, useMouse } from "react-use";
+import { TILE_SIZE, Tanks } from "../shared/constants";
+import { useKey } from "react-use";
+import { TankImage } from "./TankImage";
 
 interface TowerPlacerProps {
-  setIsPlacingTower: (isPlacingTower: boolean) => void;
+  tank: Tanks;
+  setTankMenuOpen: (tankMenuOpen: boolean) => void;
+  setTankPlacer: (tankPlacer?: Tanks) => void;
+  buyTank: (tank: Tanks) => void;
 }
 
 const CIRCLE_RADIUS = 64;
 
-const getBackgroundPosition = (sprite: keyof typeof SPRITES) => {
-  return `left -${SPRITES[sprite][0] * TILE_SIZE}px top -${
-    SPRITES[sprite][1] * TILE_SIZE
-  }px`;
-};
-
-export const TowerPlacer = ({ setIsPlacingTower }: TowerPlacerProps) => {
+export const TowerPlacer = ({
+  tank,
+  setTankPlacer,
+  setTankMenuOpen,
+  buyTank,
+}: TowerPlacerProps) => {
   const [mapConfig, setMapConfig] = React.useState<[number, number][]>([]);
 
   const cancelPlacement = () => {
-    setIsPlacingTower(false);
+    setTankPlacer(undefined);
   };
 
   useKey("Escape", cancelPlacement);
@@ -51,10 +54,12 @@ export const TowerPlacer = ({ setIsPlacingTower }: TowerPlacerProps) => {
     setPosition({ x, y });
   };
 
-  const onClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const onClick = () => {
     if (position && isValidTile) {
       window.Game.createTower(position.x, position.y);
-      setIsPlacingTower(false);
+      setTankPlacer(undefined);
+      setTankMenuOpen(false);
+      buyTank(tank);
     }
   };
 
@@ -83,19 +88,10 @@ export const TowerPlacer = ({ setIsPlacingTower }: TowerPlacerProps) => {
           } opacity-25 rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-48 w-48`}
         />
 
-        <div
-          className="absolute h-16 w-16 z-10 top-0 left-0 right-0 bottom-0"
-          style={{
-            background: "url(/tilesheet.png)",
-            backgroundPosition: getBackgroundPosition("tankBody"),
-          }}
-        />
-        <div
-          className="absolute h-16 w-16 z-20 top-0 left-0 right-0 bottom-0"
-          style={{
-            background: "url(/tilesheet.png)",
-            backgroundPosition: getBackgroundPosition("tankCannon"),
-          }}
+        <TankImage
+          className="h-16 w-16 z-10"
+          outerClassName={"h-16 w-16"}
+          tank={tank}
         />
       </div>
     </div>

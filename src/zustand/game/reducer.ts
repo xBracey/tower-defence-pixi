@@ -1,3 +1,5 @@
+import { TANK_PROPERTIES, Tanks } from "../../shared/constants";
+
 export type GameState = {
   lives: number;
   money: number;
@@ -21,7 +23,12 @@ type FinishedRound = {
   type: "FINISHED_ROUND";
 };
 
-type SetState = { type: "SET_STATE"; data: GameState };
+type BuyTank = {
+  type: "BUY_TANK";
+  payload: { tank: Tanks };
+};
+
+type SetState = { type: "SET_STATE"; payload: GameState };
 type Reset = { type: "RESET" };
 
 export type GameActions =
@@ -30,11 +37,12 @@ export type GameActions =
   | Reset
   | EndGame
   | FinishedRound
-  | EnemyReachedEnd;
+  | EnemyReachedEnd
+  | BuyTank;
 
 export const initialState: GameState = {
-  lives: 0,
-  money: 0,
+  lives: 100,
+  money: 200,
   experience: 0,
   round: 0,
 };
@@ -45,7 +53,7 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
       return initialState;
 
     case "SET_STATE": {
-      return { ...action.data };
+      return { ...action.payload };
     }
 
     case "ENEMY_KILLED":
@@ -71,6 +79,12 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
       return {
         ...state,
         lives: state.lives - 1,
+      };
+
+    case "BUY_TANK":
+      return {
+        ...state,
+        money: state.money - TANK_PROPERTIES[action.payload.tank].cost,
       };
   }
 };

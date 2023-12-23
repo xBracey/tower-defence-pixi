@@ -1,13 +1,15 @@
 import React from "react";
-import { Heart, Money, Next } from "../Icons";
+import { Heart, Money, Next, Tank } from "../Icons";
+import { Button } from "../Button";
 
 interface HeaderProps {
   lives: number;
   round: number;
   money: number;
+  onMenuClick: () => void;
 }
 
-export const Header = ({ lives, round, money }: HeaderProps) => {
+export const Header = ({ lives, round, money, onMenuClick }: HeaderProps) => {
   const onNextRound = () => {
     window.Game.startRound();
   };
@@ -35,6 +37,12 @@ export const Header = ({ lives, round, money }: HeaderProps) => {
       <div className="flex items-center p-2 justify-center">
         <Money className="text-yellow-500 h-8 w-8" />
         {money}
+      </div>
+
+      <div className="absolute -right-8 w-8 h-12 top-2">
+        <Button onClick={onMenuClick}>
+          <Tank />
+        </Button>
       </div>
     </div>
   );

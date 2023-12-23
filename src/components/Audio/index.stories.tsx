@@ -15,6 +15,4 @@ type Story = StoryObj<typeof Audio>;
  * See https://storybook.js.org/docs/api/csf
  * to learn how to use render functions.
  */
-export const Primary: Story = {
-  render: () => <Audio />,
-};
+export const Primary: Story = {};

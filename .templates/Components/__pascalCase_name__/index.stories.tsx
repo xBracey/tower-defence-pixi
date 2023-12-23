@@ -15,6 +15,4 @@ type Story = StoryObj<typeof {{ pascalCase name }}>;
  * See https://storybook.js.org/docs/api/csf
  * to learn how to use render functions.
  */
-export const Primary: Story = {
-  render: () => <{{ pascalCase name }} />,
-};
+export const Primary: Story = {};

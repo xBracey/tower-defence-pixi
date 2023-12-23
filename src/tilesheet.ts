@@ -1,9 +1,13 @@
 import { Assets, Spritesheet, Texture } from "pixi.js";
-import { TileKey } from "./shared/constants";
+import {
+  SPRITESHEET_HEIGHT,
+  SPRITESHEET_WIDTH,
+  TILE_SIZE,
+  TileKey,
+} from "./shared/constants";
 
-const tileSize = 64;
-const spritesheetWidth = 23 * tileSize;
-const spritesheetHeight = 13 * tileSize;
+const spritesheetWidth = SPRITESHEET_WIDTH * TILE_SIZE;
+const spritesheetHeight = SPRITESHEET_HEIGHT * TILE_SIZE;
 
 export class Tilesheet {
   public spritesheet?: Spritesheet;
@@ -58,14 +62,14 @@ export class Tilesheet {
         name,
         frame: {
           frame: {
-            x: x * tileSize,
-            y: y * tileSize,
-            w: tileSize,
-            h: tileSize,
+            x: x * TILE_SIZE,
+            y: y * TILE_SIZE,
+            w: TILE_SIZE,
+            h: TILE_SIZE,
           },
-          spriteSourceSize: { x: 0, y: 0, w: tileSize, h: tileSize },
-          sourceSize: { w: tileSize, h: tileSize },
-          anchor: { x: tileSize / 2, y: tileSize / 2 },
+          spriteSourceSize: { x: 0, y: 0, w: TILE_SIZE, h: TILE_SIZE },
+          sourceSize: { w: TILE_SIZE, h: TILE_SIZE },
+          anchor: { x: TILE_SIZE / 2, y: TILE_SIZE / 2 },
         },
       };
     });

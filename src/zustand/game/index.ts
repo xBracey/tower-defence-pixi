@@ -1,13 +1,18 @@
 import { GetState, SetState, StateCreator, StoreApi } from "zustand";
 import { GameActions, GameState, initialState, reducer } from "./reducer";
 import { Dispatch } from "react";
+import { Tanks } from "../../shared/constants";
 
 export interface GameValuesSlice {
   state: GameState;
+  tankMenuOpen: boolean;
+  tankPlacer?: Tanks;
 }
 
 export interface GameActionsSlice {
   dispatch: Dispatch<GameActions>;
+  setTankMenuOpen: (tankMenuOpen: boolean) => void;
+  setTankPlacer: (tankPlacer?: Tanks) => void;
 }
 
 export interface GameSlice {
@@ -16,6 +21,8 @@ export interface GameSlice {
 
 export const gameInitialValuesState: GameValuesSlice = {
   state: initialState,
+  tankMenuOpen: false,
+  tankPlacer: undefined,
 };
 
 const setSlice = (
@@ -39,6 +46,10 @@ export const createGameSlice: StateCreator<GameSlice> = (set) => ({
         (state) => ({ ...state, state: reducer(state.state, action) }),
         set
       ),
+    setTankMenuOpen: (tankMenuOpen: boolean) =>
+      setSlice((state) => ({ ...state, tankMenuOpen }), set),
+    setTankPlacer: (tankPlacer?: Tanks) =>
+      setSlice((state) => ({ ...state, tankPlacer }), set),
   },
 });
 

@@ -4,6 +4,23 @@ import React from "react";
 export type IconProps = {
   className?: string;
 };
+const Burger = (props: IconProps) => (
+  <svg
+    {...props}
+    className={`fill-current ${props.className}`}
+    aria-hidden="true"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      d="M4 6h16M4 12h16m-7 6h7"
+    ></path>
+  </svg>
+);
 const Heart = (props: IconProps) => (
   <svg
     {...props}
@@ -111,4 +128,4 @@ const Tank = (props: IconProps) => (
   </svg>
 );
 
-export { Heart, Money, Music, Next, Tank };
+export { Burger, Heart, Money, Music, Next, Tank };
