@@ -1,8 +1,9 @@
 import React from "react";
-import { TANK_PROPERTIES, Tanks } from "../../shared/constants";
+import { Tanks } from "../../shared/constants";
 import { TankImage } from "../TankImage";
 import { Button } from "../Button";
 import { Money } from "../Icons";
+import { TANK_PROPERTIES } from "../../shared/tanks";
 
 interface TankCardProps {
   tank: Tanks;
@@ -15,7 +16,7 @@ export const TankCard = ({ tank, cost, money, onTankPlace }: TankCardProps) => {
   const canAfford = money >= cost;
 
   return (
-    <div className="m-2 p-2 bg-green-100 border-green-600 border-4 rounded-md flex flex-col gap-1 max-w-xs text-base items-center">
+    <div className="m-2 p-2 py-1 bg-green-100 border-green-600 border-4 rounded-md flex flex-col max-w-xs text-base items-center">
       <h3 className="text-gray-800 text-lg -mb-2 font-bold">
         {TANK_PROPERTIES[tank].name}
       </h3>

@@ -1,23 +1,27 @@
 import { Container, Sprite, Texture } from "pixi.js";
-import { TILE_SIZE } from "../../shared/constants";
+import { TILE_SIZE, Tanks } from "../../shared/constants";
 import { v4 } from "uuid";
 import { TowerRange } from "./range";
 import { Bullet } from "./bullet";
 import { Collidor } from "../utils/collidor";
 import { sound } from "@pixi/sound";
+import { TANK_PROPERTIES } from "../../shared/tanks";
 
 export class Tower extends Container {
-  private range: number = 192;
-  private fireRate: number = 10;
   private bodySprite: Collidor;
   private cannonSprite: Sprite;
   public id: string;
+  public type: Tanks = "Normal";
+  public properties = TANK_PROPERTIES[this.type];
   public fireTimer: number = 0;
 
   constructor(x: number, y: number) {
     super();
-    const bodyTexture = window.Game.map.getTexture("tankBody");
-    const cannonTexture = window.Game.map.getTexture("tankCannon");
+
+    this.properties = TANK_PROPERTIES[this.type];
+
+    const bodyTexture = window.Game.map.getTexture(this.properties.tiles[0]);
+    const cannonTexture = window.Game.map.getTexture(this.properties.tiles[1]);
 
     this.id = `tower+${v4()}`;
 
@@ -41,7 +45,7 @@ export class Tower extends Container {
     this.addChild(this.bodySprite);
     this.addChild(this.cannonSprite);
 
-    const rangeEntity = new TowerRange(this.range, this.id);
+    const rangeEntity = new TowerRange(this.properties.range, this.id);
     this.addChild(rangeEntity);
 
     window.Game.addContainer(this);
@@ -49,7 +53,7 @@ export class Tower extends Container {
   }
 
   public fire(entity: Collidor) {
-    if (this.fireTimer < this.fireRate) {
+    if (this.fireTimer < this.properties.fireRate) {
       return;
     }
 

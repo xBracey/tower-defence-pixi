@@ -1,4 +1,5 @@
-import { TANK_PROPERTIES, Tanks } from "../../shared/constants";
+import { Tanks } from "../../shared/constants";
+import { TANK_PROPERTIES } from "../../shared/tanks";
 
 export type GameState = {
   lives: number;

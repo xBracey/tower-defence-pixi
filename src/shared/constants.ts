@@ -6,25 +6,14 @@ export const MAP_HEIGHT = 12;
 export const MAP_WIDTH_PX = MAP_WIDTH * TILE_SIZE;
 export const MAP_HEIGHT_PX = MAP_HEIGHT * TILE_SIZE;
 
-export type Tanks = "Normal";
+export type Tanks = "Normal" | "Powerful" | "Fast" | "Sniper";
 export type TankProperty = {
   name: string;
   cost: number;
   damage: number;
   range: number;
   fireRate: number;
-  tiles: TileKey[];
-};
-
-export const TANK_PROPERTIES: Record<Tanks, TankProperty> = {
-  Normal: {
-    name: "Normal Tank",
-    cost: 100,
-    damage: 10,
-    range: 10,
-    fireRate: 1,
-    tiles: ["tankBody", "tankCannon"],
-  },
+  tiles: [TileKey, TileKey];
 };
 
 export const SPRITES: Record<TileKey, [number, number]> = {
@@ -46,6 +35,9 @@ export const SPRITES: Record<TileKey, [number, number]> = {
 
 export const TANKS: Record<Tanks, [TileKey, TileKey]> = {
   Normal: ["tankBody", "tankCannon"],
+  Powerful: ["tankBody", "tankCannon"],
+  Fast: ["tankBody", "tankCannon"],
+  Sniper: ["tankBody", "tankCannon"],
 };
 
 export type TileKey =
