@@ -1,9 +1,9 @@
 import { Assets, Spritesheet, Texture } from "pixi.js";
 import {
+  SPRITES,
   SPRITESHEET_HEIGHT,
   SPRITESHEET_WIDTH,
   TILE_SIZE,
-  TileKey,
 } from "./shared/constants";
 
 const spritesheetWidth = SPRITESHEET_WIDTH * TILE_SIZE;
@@ -40,24 +40,7 @@ export class Tilesheet {
   }
 
   private constructSpritesheetFrames() {
-    const sprites: Record<TileKey, [number, number]> = {
-      grassBottomRight: [0, 0],
-      grassBottom: [1, 0],
-      grassBottomLeft: [2, 0],
-      grassRight: [1, 1],
-      grass: [1, 1],
-      grassLeft: [2, 1],
-      grassTopRight: [0, 2],
-      grassTop: [1, 2],
-      grassTopLeft: [2, 2],
-      path: [1, 4],
-      tree: [15, 5],
-      enemy: [15, 10],
-      tankBody: [15, 11],
-      tankCannon: [15, 12],
-    };
-
-    const frames = Object.entries(sprites).map(([name, [x, y]]) => {
+    const frames = Object.entries(SPRITES).map(([name, [x, y]]) => {
       return {
         name,
         frame: {

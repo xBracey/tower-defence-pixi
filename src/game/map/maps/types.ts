@@ -7,8 +7,8 @@ export type TDMapDecoration = {
 };
 
 export type TDMapEnemyConfig = {
-  numberOfEnemies: number;
-  timeBetweenSpawns: (index: number) => number;
+  num: number;
+  time: number;
 };
 
 export type TDMap = {

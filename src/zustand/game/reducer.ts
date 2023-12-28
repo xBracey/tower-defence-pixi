@@ -42,8 +42,8 @@ export type GameActions =
   | BuyTank;
 
 export const initialState: GameState = {
-  lives: 100,
-  money: 200,
+  lives: 20,
+  money: 100,
   experience: 0,
   round: 0,
 };

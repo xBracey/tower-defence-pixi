@@ -1,24 +1,9 @@
 import { TDMapEnemyConfig } from "../types";
 
 export const rounds: TDMapEnemyConfig[] = [
-  {
-    numberOfEnemies: 10,
-    timeBetweenSpawns: () => 1000,
-  },
-  {
-    numberOfEnemies: 20,
-    timeBetweenSpawns: () => 800,
-  },
-  {
-    numberOfEnemies: 30,
-    timeBetweenSpawns: () => 600,
-  },
-  {
-    numberOfEnemies: 40,
-    timeBetweenSpawns: () => 400,
-  },
-  {
-    numberOfEnemies: 50,
-    timeBetweenSpawns: () => 200,
-  },
+  { num: 10, time: 500 },
+  { num: 20, time: 400 },
+  { num: 30, time: 300 },
+  { num: 40, time: 200 },
+  { num: 50, time: 100 },
 ];

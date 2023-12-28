@@ -56,7 +56,7 @@ export const TowerPlacer = ({
 
   const onClick = () => {
     if (position && isValidTile) {
-      window.Game.createTower(position.x, position.y);
+      window.Game.createTower(position.x, position.y, tank);
       setTankPlacer(undefined);
       setTankMenuOpen(false);
       buyTank(tank);

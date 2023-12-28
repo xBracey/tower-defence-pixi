@@ -1,6 +1,7 @@
 import React from "react";
 import { getBackgroundPosition } from "../../shared/getBackgroundPosition";
-import { TANKS, Tanks } from "../../shared/constants";
+import { Tanks } from "../../shared/constants";
+import { TANK_PROPERTIES } from "../../shared/tanks";
 
 interface TankImageProps {
   tank: Tanks;
@@ -21,14 +22,18 @@ export const TankImage = ({
         className={`${sharedClass} ${className}`}
         style={{
           background: "url(/tilesheet.png)",
-          backgroundPosition: getBackgroundPosition(TANKS[tank][0]),
+          backgroundPosition: getBackgroundPosition(
+            TANK_PROPERTIES[tank].tiles[0]
+          ),
         }}
       />
       <div
         className={`${sharedClass} ${className}`}
         style={{
           background: "url(/tilesheet.png)",
-          backgroundPosition: getBackgroundPosition(TANKS[tank][1]),
+          backgroundPosition: getBackgroundPosition(
+            TANK_PROPERTIES[tank].tiles[1]
+          ),
         }}
       />
     </div>

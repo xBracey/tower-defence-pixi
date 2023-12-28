@@ -1,4 +1,4 @@
-import { MAP_HEIGHT, MAP_WIDTH, TILE_SIZE } from "../shared/constants";
+import { MAP_HEIGHT, MAP_WIDTH, TILE_SIZE, Tanks } from "../shared/constants";
 import { GameActions, GameState } from "../zustand/game/reducer";
 import { CollisionLogic } from "./collision";
 import { Enemy } from "./enemy";
@@ -65,10 +65,9 @@ export class TowerDefenceGame extends Game {
     if (this.state === "round") return;
     this.state = "round";
 
-    const { numberOfEnemies, timeBetweenSpawns } =
-      this.mapConfig.rounds[this.gameState.round];
+    const { num, time } = this.mapConfig.rounds[this.gameState.round];
 
-    for (let i = 0; i < numberOfEnemies; i++) {
+    for (let i = 0; i < num; i++) {
       const enemy = new Enemy(
         this.map.getPathTiles(),
         this.map.getTexture("enemy")
@@ -78,12 +77,12 @@ export class TowerDefenceGame extends Game {
 
       setTimeout(() => {
         enemy.start();
-      }, timeBetweenSpawns(i) * i);
+      }, time * i);
     }
   }
 
-  public createTower(x: number, y: number): void {
-    const tower = new Tower(x, y);
+  public createTower(x: number, y: number, type: Tanks): void {
+    const tower = new Tower(x, y, type);
     this.collisionChecker.addTower(tower);
   }
 

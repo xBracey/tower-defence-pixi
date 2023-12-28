@@ -1,5 +1,5 @@
-import { Container, Sprite, Texture } from "pixi.js";
-import { TILE_SIZE, Tanks } from "../../shared/constants";
+import { Container, Sprite } from "pixi.js";
+import { TILE_SIZE, TankProperty, Tanks } from "../../shared/constants";
 import { v4 } from "uuid";
 import { TowerRange } from "./range";
 import { Bullet } from "./bullet";
@@ -11,13 +11,14 @@ export class Tower extends Container {
   private bodySprite: Collidor;
   private cannonSprite: Sprite;
   public id: string;
-  public type: Tanks = "Normal";
-  public properties = TANK_PROPERTIES[this.type];
+  public type: Tanks;
+  public properties: TankProperty;
   public fireTimer: number = 0;
 
-  constructor(x: number, y: number) {
+  constructor(x: number, y: number, type: Tanks) {
     super();
 
+    this.type = type;
     this.properties = TANK_PROPERTIES[this.type];
 
     const bodyTexture = window.Game.map.getTexture(this.properties.tiles[0]);
@@ -63,9 +64,10 @@ export class Tower extends Container {
     const dy = entity.y - this.y + TILE_SIZE / 2;
     const angle = Math.atan2(dy, dx);
 
-    this.cannonSprite.rotation = angle;
+    this.cannonSprite.rotation =
+      angle - (this.properties.cannonRotationOffset ?? 0);
 
-    const bullet = new Bullet(0, 0, angle, this.id);
+    const bullet = new Bullet(0, 0, angle, this.id, this.properties.damage);
     this.addChild(bullet);
     this.fireTimer = 0;
   }

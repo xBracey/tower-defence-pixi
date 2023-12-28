@@ -14,6 +14,7 @@ export type TankProperty = {
   range: number;
   fireRate: number;
   tiles: [TileKey, TileKey];
+  cannonRotationOffset?: number;
 };
 
 export const SPRITES: Record<TileKey, [number, number]> = {
@@ -31,13 +32,13 @@ export const SPRITES: Record<TileKey, [number, number]> = {
   enemy: [15, 10],
   tankBody: [15, 11],
   tankCannon: [15, 12],
-};
-
-export const TANKS: Record<Tanks, [TileKey, TileKey]> = {
-  Normal: ["tankBody", "tankCannon"],
-  Powerful: ["tankBody", "tankCannon"],
-  Fast: ["tankBody", "tankCannon"],
-  Sniper: ["tankBody", "tankCannon"],
+  fastTankBody: [19, 7],
+  fastTankCannon: [19, 8],
+  powerTankBody: [20, 7],
+  powerTankCannon: [19, 10],
+  sniperTankBody: [16, 11],
+  sniperTankCannon: [16, 12],
+  bullet: [19, 11],
 };
 
 export type TileKey =
@@ -54,4 +55,11 @@ export type TileKey =
   | "tree"
   | "enemy"
   | "tankBody"
-  | "tankCannon";
+  | "tankCannon"
+  | "fastTankBody"
+  | "fastTankCannon"
+  | "powerTankBody"
+  | "powerTankCannon"
+  | "sniperTankBody"
+  | "sniperTankCannon"
+  | "bullet";

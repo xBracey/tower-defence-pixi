@@ -35,6 +35,7 @@ export class Collidor extends Container {
   private onTickFunction: () => void;
   public id: string;
   public hitboxes: Sprite[];
+  public isDestroyed: boolean = false;
 
   constructor(options: SpriteOptions & CollidorProps) {
     super(options);
@@ -65,13 +66,13 @@ export class Collidor extends Container {
 
       const graphicSprite = new Sprite(spriteOptions);
 
-      graphicSprite.addChild(graphic);
+      // graphicSprite.addChild(graphic);
 
       return graphicSprite;
     });
 
     this.sprite = new Sprite({
-      texture: options.texture ?? Texture.WHITE,
+      texture: options.texture ?? Texture.EMPTY,
       x: 0,
       y: 0,
       width: options.width,
@@ -100,6 +101,7 @@ export class Collidor extends Container {
 
   public destroy(): void {
     super.destroy();
+    this.isDestroyed = true;
     this.hitboxes.forEach((hitbox) => hitbox.destroy());
     this.sprite.destroy();
     window.Game.collisionChecker.remove(this.id);

@@ -7,12 +7,12 @@ import { TANK_PROPERTIES } from "../../shared/tanks";
 
 interface TankCardProps {
   tank: Tanks;
-  cost: number;
   money: number;
   onTankPlace: (tank: Tanks) => void;
 }
 
-export const TankCard = ({ tank, cost, money, onTankPlace }: TankCardProps) => {
+export const TankCard = ({ tank, money, onTankPlace }: TankCardProps) => {
+  const cost = TANK_PROPERTIES[tank].cost;
   const canAfford = money >= cost;
 
   return (

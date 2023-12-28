@@ -41,12 +41,14 @@ export const TowersMenu = ({
           }}
         >
           <div className="flex flex-col gap-4 p-2">
+            <TankCard tank="Normal" money={money} onTankPlace={setTankPlacer} />
             <TankCard
-              tank="Normal"
-              cost={100}
+              tank="Powerful"
               money={money}
-              onTankPlace={() => setTankPlacer("Normal")}
+              onTankPlace={setTankPlacer}
             />
+            <TankCard tank="Fast" money={money} onTankPlace={setTankPlacer} />
+            <TankCard tank="Sniper" money={money} onTankPlace={setTankPlacer} />
           </div>
         </div>
       )}

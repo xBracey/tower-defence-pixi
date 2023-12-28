@@ -72,7 +72,7 @@ export class CollisionLogic extends CollisionChecker {
     ) as Enemy[];
 
     if (bullet && enemyCollisions.length > 0) {
-      enemyCollisions[0].health--;
+      enemyCollisions[0].health -= bullet.damage;
       bullet.destroy();
     }
   }
