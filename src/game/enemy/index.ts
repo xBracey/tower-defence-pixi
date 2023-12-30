@@ -1,27 +1,37 @@
-import { Sprite, Texture } from "pixi.js";
+import { Texture } from "pixi.js";
 import { PathTile } from "../map";
 import { TILE_SIZE } from "../../shared/constants";
 import { Collidor } from "../utils/collidor";
+import { ENEMY_PROPERTIES, Enemies, EnemyProperty } from "../../shared/enemies";
 
 export class Enemy extends Collidor {
   private pathTiles: PathTile[];
   private currentPathTileIndex: number;
   private state: "moving" | "idle" = "idle";
-  private speed: number = 2;
-  public health: number = 5;
+  public type: Enemies;
+  public properties: EnemyProperty;
+  public health: number;
   public distanceTravelled: number = 0;
+  public direction: "up" | "down" | "left" | "right" = "right";
 
-  constructor(pathTiles: PathTile[], texture: Texture) {
+  constructor(pathTiles: PathTile[], texture: Texture, type: Enemies) {
+    const properties = ENEMY_PROPERTIES[type];
+
     super({
-      texture,
+      texture: window.Game.map.getTexture(properties.tile),
       idPrefix: "enemy",
       hitboxesDimensions: [{ x: 16, y: 16, width: 32, height: 32 }],
       x: -TILE_SIZE,
       y: -TILE_SIZE,
       width: 64,
       height: 64,
-      anchorPoints: { x: 0, y: 0 },
+      anchorPoints: { x: 0.5, y: 0.5 },
     });
+
+    this.type = type;
+    this.properties = properties;
+    this.health = this.properties.health;
+
     this.x = -TILE_SIZE;
     this.y = -TILE_SIZE;
     this.pathTiles = pathTiles;
@@ -32,8 +42,8 @@ export class Enemy extends Collidor {
 
   public start(): void {
     this.state = "moving";
-    this.x = this.pathTiles[0].x * TILE_SIZE;
-    this.y = this.pathTiles[0].y * TILE_SIZE;
+    this.x = this.pathTiles[0].x * TILE_SIZE + TILE_SIZE / 2;
+    this.y = this.pathTiles[0].y * TILE_SIZE + TILE_SIZE / 2;
   }
 
   public onTick(): void {
@@ -47,11 +57,15 @@ export class Enemy extends Collidor {
     }
 
     if (this.state === "moving" && this.pathTiles[this.currentPathTileIndex]) {
-      this.distanceTravelled += this.speed;
+      this.distanceTravelled += this.properties.speed;
 
       if (
-        this.x === this.pathTiles[this.currentPathTileIndex].x * TILE_SIZE &&
-        this.y === this.pathTiles[this.currentPathTileIndex].y * TILE_SIZE
+        this.x ===
+          this.pathTiles[this.currentPathTileIndex].x * TILE_SIZE +
+            TILE_SIZE / 2 &&
+        this.y ===
+          this.pathTiles[this.currentPathTileIndex].y * TILE_SIZE +
+            TILE_SIZE / 2
       ) {
         if (this.currentPathTileIndex === this.pathTiles.length - 1) {
           this.state = "idle";
@@ -65,11 +79,13 @@ export class Enemy extends Collidor {
       }
 
       const currentPathTile = this.pathTiles[this.currentPathTileIndex];
-      const dx = currentPathTile.x * TILE_SIZE - this.x;
-      const dy = currentPathTile.y * TILE_SIZE - this.y;
+      const dx = currentPathTile.x * TILE_SIZE - this.x + TILE_SIZE / 2;
+      const dy = currentPathTile.y * TILE_SIZE - this.y + TILE_SIZE / 2;
       const angle = Math.atan2(dy, dx);
-      const x = Math.cos(angle) * this.speed;
-      const y = Math.sin(angle) * this.speed;
+      const x = Math.cos(angle) * this.properties.speed;
+      const y = Math.sin(angle) * this.properties.speed;
+
+      this.sprite.rotation = angle;
 
       this.translate(x, y);
     }

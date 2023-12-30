@@ -1,9 +1,8 @@
 import React from "react";
-import { Tanks } from "../../shared/constants";
 import { TankImage } from "../TankImage";
 import { Button } from "../Button";
 import { Money } from "../Icons";
-import { TANK_PROPERTIES } from "../../shared/tanks";
+import { TANK_PROPERTIES, Tanks } from "../../shared/tanks";
 
 interface TankCardProps {
   tank: Tanks;

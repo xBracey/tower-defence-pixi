@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import "./index.css";
-import { MAP_HEIGHT_PX, MAP_WIDTH_PX, Tanks } from "./shared/constants";
+import { MAP_HEIGHT_PX, MAP_WIDTH_PX } from "./shared/constants";
 import { Game } from "./components/game";
 import { TowerDefenceGame } from "./game";
 import { Header } from "./components/Header";
 import { useTowerDefenceHydratedStore } from "./zustand/hydrated";
 import { useTowerDefenceStore } from "./zustand/store";
 import { TowersMenu } from "./components/TowersMenu";
+import { Tanks } from "./shared/tanks";
 
 export const TowerDefence = () => {
   const [gameInitialized, setGameInitialized] = React.useState(false);

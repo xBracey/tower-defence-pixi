@@ -1,7 +1,8 @@
 import React, { CSSProperties, useEffect, useMemo } from "react";
-import { TILE_SIZE, Tanks } from "../shared/constants";
+import { TILE_SIZE } from "../shared/constants";
 import { useKey } from "react-use";
 import { TankImage } from "./TankImage";
+import { Tanks } from "../shared/tanks";
 
 interface TowerPlacerProps {
   tank: Tanks;

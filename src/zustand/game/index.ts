@@ -1,7 +1,7 @@
 import { GetState, SetState, StateCreator, StoreApi } from "zustand";
 import { GameActions, GameState, initialState, reducer } from "./reducer";
 import { Dispatch } from "react";
-import { Tanks } from "../../shared/constants";
+import { Tanks } from "../../shared/tanks";
 
 export interface GameValuesSlice {
   state: GameState;

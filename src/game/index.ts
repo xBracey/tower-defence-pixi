@@ -1,4 +1,5 @@
-import { MAP_HEIGHT, MAP_WIDTH, TILE_SIZE, Tanks } from "../shared/constants";
+import { MAP_HEIGHT, MAP_WIDTH, TILE_SIZE } from "../shared/constants";
+import { Tanks } from "../shared/tanks";
 import { GameActions, GameState } from "../zustand/game/reducer";
 import { CollisionLogic } from "./collision";
 import { Enemy } from "./enemy";
@@ -65,19 +66,30 @@ export class TowerDefenceGame extends Game {
     if (this.state === "round") return;
     this.state = "round";
 
-    const { num, time } = this.mapConfig.rounds[this.gameState.round];
+    const { time, enemyBatch } = this.mapConfig.rounds[this.gameState.round];
 
-    for (let i = 0; i < num; i++) {
-      const enemy = new Enemy(
-        this.map.getPathTiles(),
-        this.map.getTexture("enemy")
-      );
+    let timeDelay = 0;
 
-      this.enemies.push(enemy);
+    for (let i = 0; i < enemyBatch.length; i++) {
+      const batch = enemyBatch[i];
 
-      setTimeout(() => {
-        enemy.start();
-      }, time * i);
+      for (let j = 0; j < batch.num; j++) {
+        const enemy = new Enemy(
+          this.map.getPathTiles(),
+          this.map.getTexture("enemy"),
+          batch.enemy
+        );
+
+        this.enemies.push(enemy);
+
+        setTimeout(() => {
+          enemy.start();
+        }, timeDelay);
+
+        timeDelay += batch.time;
+      }
+
+      timeDelay += time;
     }
   }
 

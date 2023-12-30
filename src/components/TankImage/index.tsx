@@ -1,7 +1,6 @@
 import React from "react";
 import { getBackgroundPosition } from "../../shared/getBackgroundPosition";
-import { Tanks } from "../../shared/constants";
-import { TANK_PROPERTIES } from "../../shared/tanks";
+import { TANK_PROPERTIES, Tanks } from "../../shared/tanks";
 
 interface TankImageProps {
   tank: Tanks;

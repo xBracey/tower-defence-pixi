@@ -1,4 +1,4 @@
-import { Tanks } from "../../shared/constants";
+import { Tanks } from "../../shared/tanks";
 import { TANK_PROPERTIES } from "../../shared/tanks";
 
 export type GameState = {
@@ -43,7 +43,7 @@ export type GameActions =
 
 export const initialState: GameState = {
   lives: 20,
-  money: 100,
+  money: 150,
   experience: 0,
   round: 0,
 };
@@ -61,7 +61,7 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
       return {
         ...state,
         experience: state.experience + 1,
-        money: state.money + 10,
+        money: state.money + 2,
       };
 
     case "END_GAME":

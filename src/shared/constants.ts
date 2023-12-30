@@ -6,17 +6,6 @@ export const MAP_HEIGHT = 12;
 export const MAP_WIDTH_PX = MAP_WIDTH * TILE_SIZE;
 export const MAP_HEIGHT_PX = MAP_HEIGHT * TILE_SIZE;
 
-export type Tanks = "Normal" | "Powerful" | "Fast" | "Sniper";
-export type TankProperty = {
-  name: string;
-  cost: number;
-  damage: number;
-  range: number;
-  fireRate: number;
-  tiles: [TileKey, TileKey];
-  cannonRotationOffset?: number;
-};
-
 export const SPRITES: Record<TileKey, [number, number]> = {
   grassBottomRight: [0, 0],
   grassBottom: [1, 0],
@@ -29,7 +18,6 @@ export const SPRITES: Record<TileKey, [number, number]> = {
   grassTopLeft: [2, 2],
   path: [1, 4],
   tree: [15, 5],
-  enemy: [15, 10],
   tankBody: [15, 11],
   tankCannon: [15, 12],
   fastTankBody: [19, 7],
@@ -39,6 +27,9 @@ export const SPRITES: Record<TileKey, [number, number]> = {
   sniperTankBody: [16, 11],
   sniperTankCannon: [16, 12],
   bullet: [19, 11],
+  enemy: [15, 10],
+  tankEnemy: [16, 10],
+  fastEnemy: [17, 10],
 };
 
 export type TileKey =
@@ -62,4 +53,6 @@ export type TileKey =
   | "powerTankCannon"
   | "sniperTankBody"
   | "sniperTankCannon"
-  | "bullet";
+  | "bullet"
+  | "tankEnemy"
+  | "fastEnemy";

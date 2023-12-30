@@ -1,11 +1,11 @@
 import { Container, Sprite } from "pixi.js";
-import { TILE_SIZE, TankProperty, Tanks } from "../../shared/constants";
+import { TILE_SIZE } from "../../shared/constants";
 import { v4 } from "uuid";
 import { TowerRange } from "./range";
 import { Bullet } from "./bullet";
 import { Collidor } from "../utils/collidor";
 import { sound } from "@pixi/sound";
-import { TANK_PROPERTIES } from "../../shared/tanks";
+import { TANK_PROPERTIES, TankProperty, Tanks } from "../../shared/tanks";
 
 export class Tower extends Container {
   private bodySprite: Collidor;
@@ -60,8 +60,8 @@ export class Tower extends Container {
 
     sound.play("shoot", { volume: 0.5, start: 0, end: 0.15 });
 
-    const dx = entity.x - this.x + TILE_SIZE / 2;
-    const dy = entity.y - this.y + TILE_SIZE / 2;
+    const dx = entity.x - this.x;
+    const dy = entity.y - this.y;
     const angle = Math.atan2(dy, dx);
 
     this.cannonSprite.rotation =

@@ -1,4 +1,11 @@
 import { TileKey } from "../../../shared/constants";
+import { Enemies } from "../../../shared/enemies";
+
+export type EnemyBatch = {
+  enemy: Enemies;
+  num: number;
+  time: number;
+};
 
 export type TDMapDecoration = {
   x: number;
@@ -7,8 +14,8 @@ export type TDMapDecoration = {
 };
 
 export type TDMapEnemyConfig = {
-  num: number;
   time: number;
+  enemyBatch: EnemyBatch[];
 };
 
 export type TDMap = {

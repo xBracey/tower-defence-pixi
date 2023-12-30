@@ -1,8 +1,8 @@
 import React from "react";
-import { MAP_HEIGHT_PX, Tanks } from "../../shared/constants";
+import { MAP_HEIGHT_PX } from "../../shared/constants";
 import { TowerPlacer } from "../towerPlacer";
 import { TankCard } from "../TankCard";
-import { Burger } from "../Icons";
+import { Tanks } from "../../shared/tanks";
 
 interface TowersMenuProps {
   money: number;

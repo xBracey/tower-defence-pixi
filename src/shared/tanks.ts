@@ -1,4 +1,15 @@
-import { TankProperty, Tanks } from "./constants";
+import { TileKey } from "./constants";
+
+export type Tanks = "Normal" | "Powerful" | "Fast" | "Sniper";
+export type TankProperty = {
+  name: string;
+  cost: number;
+  damage: number;
+  range: number;
+  fireRate: number;
+  tiles: [TileKey, TileKey];
+  cannonRotationOffset?: number;
+};
 
 export const TANK_PROPERTIES: Record<Tanks, TankProperty> = {
   Normal: {

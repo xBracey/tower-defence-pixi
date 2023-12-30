@@ -31,8 +31,8 @@ interface CollidorProps {
 }
 
 export class Collidor extends Container {
-  private sprite: Sprite;
   private onTickFunction: () => void;
+  protected sprite: Sprite;
   public id: string;
   public hitboxes: Sprite[];
   public isDestroyed: boolean = false;
@@ -66,7 +66,7 @@ export class Collidor extends Container {
 
       const graphicSprite = new Sprite(spriteOptions);
 
-      // graphicSprite.addChild(graphic);
+      graphicSprite.addChild(graphic);
 
       return graphicSprite;
     });
