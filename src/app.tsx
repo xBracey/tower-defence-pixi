@@ -8,15 +8,14 @@ import { useTowerDefenceHydratedStore } from "./zustand/hydrated";
 import { useTowerDefenceStore } from "./zustand/store";
 import { TowersMenu } from "./components/TowersMenu";
 import { Tanks } from "./shared/tanks";
+import { TankOverlay } from "./components/TankOverlay";
 
 export const TowerDefence = () => {
   const [gameInitialized, setGameInitialized] = React.useState(false);
-  const { state, tankMenuOpen, tankPlacer } = useTowerDefenceHydratedStore(
-    (state) => state.game
-  );
-  const { dispatch, setTankMenuOpen, setTankPlacer } = useTowerDefenceStore(
-    (state) => state.game
-  );
+  const { state, tankMenuOpen, tankPlacer, tankState } =
+    useTowerDefenceHydratedStore((state) => state.game);
+  const { dispatch, setTankMenuOpen, setTankPlacer, tankDispatch } =
+    useTowerDefenceStore((state) => state.game);
 
   useEffect(() => {
     window.Game = new TowerDefenceGame("map1", state, dispatch);
@@ -62,6 +61,7 @@ export const TowerDefence = () => {
                 setTankPlacer={setTankPlacer}
                 buyTank={buyTank}
               />
+              <TankOverlay tankState={tankState} tankDispatch={tankDispatch} />
               <Game />
             </div>
           </div>

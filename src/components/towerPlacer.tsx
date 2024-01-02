@@ -3,6 +3,7 @@ import { TILE_SIZE } from "../shared/constants";
 import { useKey } from "react-use";
 import { TankImage } from "./TankImage";
 import { Tanks } from "../shared/tanks";
+import { useTowerDefenceStore } from "../zustand/store";
 
 interface TowerPlacerProps {
   tank: Tanks;
@@ -19,6 +20,8 @@ export const TowerPlacer = ({
   setTankMenuOpen,
   buyTank,
 }: TowerPlacerProps) => {
+  const { tankDispatch } = useTowerDefenceStore((state) => state.game);
+
   const [mapConfig, setMapConfig] = React.useState<[number, number][]>([]);
 
   const cancelPlacement = () => {
@@ -57,10 +60,19 @@ export const TowerPlacer = ({
 
   const onClick = () => {
     if (position && isValidTile) {
-      window.Game.createTower(position.x, position.y, tank);
+      const towerId = window.Game.createTower(position.x, position.y, tank);
       setTankPlacer(undefined);
       setTankMenuOpen(false);
       buyTank(tank);
+      tankDispatch({
+        type: "ADD_TANK",
+        payload: {
+          x: position.x + CIRCLE_RADIUS / 2,
+          y: position.y + CIRCLE_RADIUS / 2,
+          id: towerId,
+          tank,
+        },
+      });
     }
   };
 

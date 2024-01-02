@@ -93,9 +93,10 @@ export class TowerDefenceGame extends Game {
     }
   }
 
-  public createTower(x: number, y: number, type: Tanks): void {
+  public createTower(x: number, y: number, type: Tanks): string {
     const tower = new Tower(x, y, type);
     this.collisionChecker.addTower(tower);
+    return tower.id;
   }
 
   public removeTower(id: string): void {
